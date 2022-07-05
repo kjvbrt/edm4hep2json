@@ -17,6 +17,7 @@
 #include <exception>
 #include <cassert>
 
+
 nlohmann::json processEvent(podio::EventStore& store,
                             bool verboser,
                             unsigned eventNum) {
@@ -25,8 +26,7 @@ nlohmann::json processEvent(podio::EventStore& store,
 
   nlohmann::json eventDict;
   eventDict["event number"] = eventNum;
-  // eventDict["run number"] = 666;
-  eventDict["run number"] = 0;
+  eventDict["run number"] = 666;
   nlohmann::json allClustersArray;
 
   if(clusterCollection.isValid()) {
@@ -80,7 +80,7 @@ nlohmann::json processEvent(podio::EventStore& store,
 }
 
 template<typename ReaderT>
-void read_events(const std::string& filename) {
+void read_events(const std::string& filename, const std::string& jsonFile) {
   ReaderT reader;
   reader.openFile(filename);
 
@@ -100,10 +100,10 @@ void read_events(const std::string& filename) {
   }
   reader.closeFile();
 
-  std::ofstream jsonFile("fccee-lar-ecal.json");
-  if (jsonFile.is_open()) {
-    jsonFile << allEventsDict << std::endl;
-    jsonFile.close();
+  std::ofstream outFile(jsonFile);
+  if (outFile.is_open()) {
+    outFile << allEventsDict << std::endl;
+    outFile.close();
   }
 }
 
